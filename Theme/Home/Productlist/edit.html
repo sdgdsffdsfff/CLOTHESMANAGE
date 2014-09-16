@@ -1,0 +1,120 @@
+<form action="{:U('Home/Productlist/update')}" class="form_dogocms" method="post">
+    <div class="division">
+        <input type="hidden" value="{$data.id}" name="id">
+        <input type='hidden' value='{$data.sort_id}' name='sort_id'>
+        <table>
+            <tbody>
+                <tr>
+                    <th>商品名：</th>
+                    <td><input type="text" placeholder="商品名称" name="name" value="{$data.name}" /><span class="msg" style="color: red"></span>
+                    </td>
+                </tr>
+                <!--
+                <tr>
+                    <th>产品分类：</th>
+                    <td><input name="sort_id" id="combotree" class="easyui-combotree combotree" data-options="url:'__MODULE__/Productlist/selectJsonTree',required:true" value="{$data.sort_id}" style="width:200px;"/><span class="red">*请先选择活动分类</span></td>
+                </tr>
+                -->
+                <tr>
+                    <th>编号：</th>
+                    <td>
+                        <input type="text" placeholder="商品编号" name="num" value="{$data.num}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>条码：</th>
+                    <td>
+                        <input type="text" placeholder="商品条码" name="barcode" value="{$data.barcode}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>产地：</th>
+                    <td>
+                        <input type="text" placeholder="商品产地" name="generate_address" value="{$data.generate_address}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>生产单位名称：</th>
+                    <td>
+                        <input type="text" placeholder="生产单位名称" name="companyname"   value="{$data.companyname}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>规格：</th>
+                    <td>
+                        <input type="text" placeholder="产品规格" name="standard"   value="{$data.standard}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>型号：</th>
+                    <td>
+                        <input type="text" placeholder="产品型号" name="model"   value="{$data.model}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>零售价：</th>
+                    <td>
+                        <input type="text" placeholder="产品零售价" name="retailprice"   value="{$data.retailprice}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>产品最低售价：</th>
+                    <td>
+                        <input type="text" placeholder="产品最低售价" name="lowerprice"   value="{$data.lowerprice}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>产品预售价1：</th>
+                    <td>
+                        <input type="text" placeholder="产品预售价1" name="presellprice1"   value="{$data.presellprice1}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>产品预售价2：</th>
+                    <td>
+                        <input type="text" placeholder="产品预售价2" name="presellprice2"   value="{$data.presellprice2}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>排序：</th>
+                    <td>
+                        <input type="text" placeholder="数字大的现实列表的时候在前边" name="myorder"   value="{$data.myorder}">
+                    </td>
+                </tr>
+            </tbody>
+        </table></div>
+</form>
+<script>
+    $(function() {
+        $('input[name="name"]').blur(function() {
+            var name = $('input[name="name"]').val();
+            var id=$('input[name="id"]').val();
+            if (name == '')
+            {
+                alert('请填写商品名称');
+                $('input[name="name"]').focus();
+                return;
+            }
+            $.ajax({
+                url: '__MODULE__/Productlist/checkName',
+                type: 'post',
+                data: {
+                    name: name,
+                    id:id
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == '1') {
+                        alert(data.msg);
+                        $('.msg').html('');
+                        $('input[name="name"]').focus();
+                    }else
+                    {
+                        $('.msg').html(data.msg);
+                    }
+                }
+            })
+        });
+    })
+
+</script>

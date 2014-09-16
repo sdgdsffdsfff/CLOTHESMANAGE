@@ -1,0 +1,78 @@
+<form action="{:U('Home/Warehouse/insert')}" class="form_dogocms" method="post">
+    <div class="division">
+        <table>
+            <tbody>
+                <tr>
+                    <th>仓库名：</th>
+                    <td><input type="text" name="name"  placeholder="仓库名" value="{$data.name}" /><span class="msg" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>仓库编号：</th>
+                    <td><input type="text" name="num"   placeholder="仓库编号" value="{$data.num}" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>仓库地址：</th>
+                    <td><input type="text" name="address"   placeholder="仓库地址" value="{$data.address}" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>仓库联系人：</th>
+                    <td><input type="text" name="contact"   placeholder="联系人" value="{$data.contact}" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>联系电话：</th>
+                    <td><input type="text" name="telephone"   placeholder="联系电话" value="{$data.telephone}" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>排序：</th>
+                    <td>
+                        <input type="text" placeholder="排序" name="myorder" value="{$data.myorder}">
+                        <br><span class="jh_fielddesc">(数字越大,越显示在前边。)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>备注：</th>
+                    <td>
+                        <textarea name="remark">{$data.remark}</textarea>
+                        <br><span class="jh_fielddesc">(仓库备注)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table></div>
+</form>
+<script>
+    $(function() {
+        $('input[name="name"]').blur(function() {
+            name = $('input[name="name"]').val();
+            if (name == '')
+            {
+                alert('请填写仓库名。');
+                $('input[name="name"]').focus();
+                return;
+            }
+            $.ajax({
+                url: '__MODULE__/Warehouse/checkName',
+                type: 'post',
+                data: {
+                    name: name
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == '1') {
+                        alert(data.msg);
+                        $('.msg').html('');
+                        $('input[name="name"]').focus();
+                    } else
+                    {
+                        $('.msg').html(data.msg);
+                    }
+                }
+            })
+        });
+    })
+
+</script>

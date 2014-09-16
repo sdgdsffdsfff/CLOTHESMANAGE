@@ -1,0 +1,92 @@
+<form action="{:U('Home/Companylist/insert')}" class="form_dogocms" method="post">
+    <div class="division">
+        <input type='hidden' value='{$id}' name='sort_id'>
+        <table>
+            <tbody>
+                <tr>
+                    <th>单位名称：</th>
+                    <td><input type="text" placeholder="单位名称" name="name" value="{$data.name}" /><span class="msg" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>单位编号：</th>
+                    <td>
+                        <input type="text" placeholder="单位编号" name="num" value="{$data.num}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>单位地址：</th>
+                    <td>
+                        <input type="text" placeholder="单位地址" name="address" value="{$data.address}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>电话：</th>
+                    <td>
+<<<<<<< HEAD
+                        <input type="text" placeholder="电话" name="telphone"   value="{$data.telphone}">
+=======
+                        <input type="text" placeholder="电话" name="telphone"   value="{$data.companyname}">
+>>>>>>> 495b5415cf8556acba62935fb53ce9b01581627b
+                    </td>
+                </tr>
+                <tr>
+                    <th>邮箱：</th>
+                    <td>
+                        <input type="text" placeholder="邮箱" name="email"   value="{$data.email}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>联系人：</th>
+                    <td>
+                        <input type="text" placeholder="联系人" name="contact"   value="{$data.contact}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>排序：</th>
+                    <td>
+                        <input type="text" placeholder="数字大的现实列表的时候在前边" name="myorder"   value="{$data.myorder}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>备注：</th>
+                    <td>
+                        <textarea name="remark">{$data.remark}</textarea>
+                        <br><span class="jh_fielddesc">(单位备注)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table></div>
+</form>
+<script>
+    $(function() {
+        $('input[name="name"]').blur(function() {
+            name = $('input[name="name"]').val();
+            if (name == '')
+            {
+                alert('请填写单位名称');
+                $('input[name="name"]').focus();
+                return;
+            }
+            $.ajax({
+                url: '__MODULE__/Companylist/checkName',
+                type: 'post',
+                data: {
+                    name: name
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == '1') {
+                        alert(data.msg);
+                        $('.msg').html('');
+                        $('input[name="name"]').focus();
+                    } else
+                    {
+                        $('.msg').html(data.msg);
+                    }
+                }
+            })
+        });
+    })
+
+</script>

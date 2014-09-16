@@ -1,0 +1,79 @@
+<table id="datagrid_company_sort">
+
+</table>
+
+<script>
+    $(function() {
+        var classId = 'company_sort';
+        var urljson = '{:U("Home/Companysort/json")}';
+        var hrefadd = '{:U("Home/Companysort/add")}';
+        var hrefedit = '{:U("Home/Companysort/edit")}';
+        var hrefcancel = '{:U("Home/Companysort/delete")}';
+        openDatagrid(classId, urljson);
+        $('#datagrid_' + classId).datagrid({
+            columns: [[
+                    {field: 'id', title: 'ID', width: 50, align: 'center'},
+                    {field: 'name', title: '站点名', width: 100},
+                    {field: 'myorder', title: '排序', width: 50},
+                    {
+                        field: 'action',
+                        title: '操作',
+                        width: 50,
+                        formatter: function(value, row, index) {
+                            return '<img class="btn_do" src="__PUBLIC__/Easyui/themes/icons/pencil.png" onclick="ding_edit(\'' + hrefedit + '?id=' + row.id + '\',\'' + classId + '\')"  title="编辑"/>&nbsp;&nbsp;\n\
+                                    <img class="btn_do" src="__PUBLIC__/Easyui/themes/icons/cancel.png" onclick="ding_cancel(\'' + row.id + '\',\'' + hrefcancel + '\',\'' + classId + '\')" title=" 删除"/>&nbsp;&nbsp;\n\ ';
+                        }
+                    }
+                ]],
+            toolbar: [{
+                    id: 'btnadd_' + classId,
+                    text: '添加',
+                    iconCls: 'icon-add',
+                    handler: function() {
+                        var title = '添加城市站点';
+                        openDialog(classId, hrefadd, title);
+                    }
+                }, '-', {
+                    id: 'btnedit_' + classId,
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function() {
+                        var ids = [];
+                        var rows = $('#datagrid_' + classId).datagrid('getSelections');
+                        for (var i = 0; i < rows.length; i++) {
+                            ids.push(rows[i].id);
+                        }
+                        if (ids == '') {
+                            $.messager.alert('信息提示', '请选择要操作的项', 'error');
+                            return false;
+                        } else if (rows.length > 1) {
+                            $.messager.alert('信息提示', '请选择一个要操作的项', 'error');
+                            return false;
+                        }
+                        var href = hrefedit + '?id=' + ids;
+                        var title = '编辑信息';
+                        openDialog(classId, href, title);
+                    }
+                }, '-', {
+                    id: 'btncanel_' + classId,
+                    text: '删除',
+                    iconCls: 'icon-cancel',
+                    handler: function() {
+                        var ids = [];
+                        var rows = $('#datagrid_' + classId).datagrid('getSelections');
+                        for (var i = 0; i < rows.length; i++) {
+                            ids.push(rows[i].id);
+                        }
+                        if (ids == '') {
+                            $.messager.alert('信息提示', '请选择要操作的项', 'error');
+                            return false;
+                        }
+                        var href = hrefcancel;
+                        var title = '删除信息';
+                        dogoDelete(ids, title, href, classId);
+                    }
+                }
+            ]//toolbar
+        });
+    });
+</script>

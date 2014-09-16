@@ -1,0 +1,80 @@
+<table  id="datagrid_product_sort{$id}">
+
+</table>
+<script>
+    $(function() {
+        var classId = 'product_sort' + '{$id}';
+        var urljson = '{:U("Home/Productlist/json",array("id"=>$id))}';
+        var hrefadd = '{:U("Home/Productlist/add",array("id"=>$id))}';
+        var hrefedit = '{:U("Home/Productlist/edit")}';
+        var hrefcancel = '{:U("Home/Productlist/delete")}';
+        openDatagrid(classId, urljson);
+        $('#datagrid_' + classId).datagrid({
+            columns: [[
+                    {field: 'id', title: 'ID', width: 50, align: 'center'},
+                    {field: 'name', title: '产品名称', width: 100},
+                    {field: 'num', title: '编号', width: 50},
+                    {field: 'companyname', title: '生产单位', width: 50},
+                    {field: 'standard', title: '规格', width: 50},
+                    {
+                        field: 'action',
+                        title: '操作',
+                        width: 50,
+                        formatter: function(value, row, index) {
+                            return '<img class="btn_do" src="__PUBLIC__/Easyui/themes/icons/pencil.png" onclick="ding_edit(\'' + hrefedit + '?id=' + row.id + '\',\'' + classId + '\')"  title="编辑"/>&nbsp;&nbsp;\n\
+                                    <img class="btn_do" src="__PUBLIC__/Easyui/themes/icons/cancel.png" onclick="ding_cancel(\'' + row.id + '\',\'' + hrefcancel + '\',\'' + classId + '\')" title=" 删除"/>&nbsp;&nbsp;\n\ ';
+                        }
+                    }
+                ]],
+            toolbar: [{
+                    id: 'btnadd_' + classId,
+                    text: '添加',
+                    iconCls: 'icon-add',
+                    handler: function() {
+                        var title = '添加商品';
+                        openDialog(classId, hrefadd, title);
+                    }
+                }, '-', {
+                    id: 'btnedit_' + classId,
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function() {
+                        var ids = [];
+                        var rows = $('#datagrid_' + classId).datagrid('getSelections');
+                        for (var i = 0; i < rows.length; i++) {
+                            ids.push(rows[i].id);
+                        }
+                        if (ids == '') {
+                            $.messager.alert('信息提示', '请选择要操作的项', 'error');
+                            return false;
+                        } else if (rows.length > 1) {
+                            $.messager.alert('信息提示', '请选择一个要操作的项', 'error');
+                            return false;
+                        }
+                        var href = hrefedit + '?id=' + ids;
+                        var title = '编辑信息';
+                        openDialog(classId, href, title);
+                    }
+                }, '-', {
+                    id: 'btncanel_' + classId,
+                    text: '删除',
+                    iconCls: 'icon-cancel',
+                    handler: function() {
+                        var ids = [];
+                        var rows = $('#datagrid_' + classId).datagrid('getSelections');
+                        for (var i = 0; i < rows.length; i++) {
+                            ids.push(rows[i].id);
+                        }
+                        if (ids == '') {
+                            $.messager.alert('信息提示', '请选择要操作的项', 'error');
+                            return false;
+                        }
+                        var href = hrefcancel;
+                        var title = '删除信息';
+                        dogoDelete(ids, title, href, classId);
+                    }
+                }
+            ]//toolbar
+        });
+    });
+</script>
